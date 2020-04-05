@@ -278,25 +278,15 @@ public class Traversal {
 			colCount = boardFile.readInt();
 			board = new String[rowCount][colCount];
 			for (int r = 0; r < rowCount; r++) {
-				boardFile.readString(); // read new line
+				boardFile.readChar(); // read new line
 				for (int c = 0; c < colCount; c++) {
-					String obs = boardFile.readString();
-					board[r][c] = obs;
-
-					for (int i = 0; i < obs.length(); i++) {
-						char currentChar = obs.charAt(i);
-						switch (currentChar) {
-						case 's':
-							curRow = r; // start row
-							curCol = c; // start column
-							board[curRow][curCol] = "Y";
-							break;
-						case 'S':
-							curRow = r; // start row
-							curCol = c; // start column
-							board[curRow][curCol] = "Y";
-							break;
-						}
+					char obs = boardFile.readChar();
+					if ('s'==obs || 'S'==obs) {
+						curRow = r; // start row
+						curCol = c; // start column
+						board[curRow][curCol] = "Y";
+					} else {
+						board[r][c] = String.valueOf(obs);
 					}
 				}
 			}
