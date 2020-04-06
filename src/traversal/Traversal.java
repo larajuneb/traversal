@@ -5,8 +5,6 @@ import princeton.In;
 
 public class Traversal {
 
-	// TODO: define your 2 dim array
-	private static String[][] origBoard;
 	private static String[][] board;
 	private static int startRow, startCol, curRow, curCol;
 	private static int rowCount;
@@ -86,28 +84,16 @@ public class Traversal {
 						switch (currentChar) {
 						case 'u':
 							if (r > 0) {
-								board[r - 1][c] = addChar(board[r - 1][c],
-										currentChar); // add this char at the
-														// end of the string at
-														// new position
-								board[r][c] = removeChar(currentString, i); // remove
-																			// the
-																			// char
-																			// from
-																			// string
-																			// at
-																			// current
-																			// position
+								board[r - 1][c] = addChar(board[r - 1][c], currentChar);
+								board[r][c] = removeChar(currentString, i);
 							} else if (r == 0) {
-								board[rowCount - 1][c] = addChar(
-										board[rowCount - 1][c], currentChar);
+								board[rowCount - 1][c] = addChar(board[rowCount - 1][c], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'd':
 							if (r < (rowCount - 1)) {
-								board[r + 1][c] = addChar(board[r + 1][c],
-										currentChar);
+								board[r + 1][c] = addChar(board[r + 1][c], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							} else if (r == (rowCount - 1)) {
 								board[0][c] = addChar(board[0][c], currentChar);
@@ -116,19 +102,16 @@ public class Traversal {
 							break;
 						case 'l':
 							if (c > 0) {
-								board[r][c - 1] = addChar(board[r][c - 1],
-										currentChar);
+								board[r][c - 1] = addChar(board[r][c - 1], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							} else if (c == 0) {
-								board[r][colCount - 1] = addChar(
-										board[r][colCount - 1], currentChar);
+								board[r][colCount - 1] = addChar(board[r][colCount - 1], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'r':
 							if (c < (colCount - 1)) {
-								board[r][c + 1] = addChar(board[r][c + 1],
-										currentChar);
+								board[r][c + 1] = addChar(board[r][c + 1],  currentChar);
 								board[r][c] = removeChar(currentString, i);
 							} else if (c == (colCount - 1)) {
 								board[r][0] = addChar(board[r][0], currentChar);
@@ -161,28 +144,16 @@ public class Traversal {
 						switch (currentChar) {
 						case 'U':
 							if (r > 0) {
-								board[r - 1][c] = addChar(board[r - 1][c],
-										currentChar); // add this char at the
-														// end of the string at
-														// new position
-								board[r][c] = removeChar(currentString, i); // remove
-																			// the
-																			// char
-																			// from
-																			// string
-																			// at
-																			// current
-																			// position
+								board[r - 1][c] = addChar(board[r - 1][c], currentChar); 
+								board[r][c] = removeChar(currentString, i);
 							} else if (r == 0) {
-								board[rowCount - 1][c] = addChar(
-										board[rowCount - 1][c], currentChar);
+								board[rowCount - 1][c] = addChar(board[rowCount - 1][c], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'D':
 							if (r < (rowCount - 1)) {
-								board[r + 1][c] = addChar(board[r + 1][c],
-										currentChar);
+								board[r + 1][c] = addChar(board[r + 1][c], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							} else if (r == (rowCount - 1)) {
 								board[0][c] = addChar(board[0][c], currentChar);
@@ -191,23 +162,19 @@ public class Traversal {
 							break;
 						case 'L':
 							if (c > 0) {
-								board[r][c - 1] = addChar(board[r][c - 1],
-										currentChar);
+								board[r][c - 1] = addChar(board[r][c - 1], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							} else if (c == 0) {
-								board[r][colCount - 1] = addChar(
-										board[r][colCount - 1], currentChar);
+								board[r][colCount - 1] = addChar(board[r][colCount - 1], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'R':
 							if (c < (colCount - 1)) {
-								board[r][c + 1] = addChar(
-										board[r][colCount + 1], currentChar);
+								board[r][c + 1] = addChar(board[r][c + 1], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							} else if (c == (colCount - 1)) {
-								board[r][0] = addChar(board[r][colCount + 1],
-										currentChar);
+								board[r][0] = addChar(board[r][0], currentChar);
 								board[r][c] = removeChar(currentString, i);
 							}
 							break;
@@ -284,7 +251,7 @@ public class Traversal {
 					if ('s'==obs || 'S'==obs) {
 						curRow = r; // start row
 						curCol = c; // start column
-						board[curRow][curCol] = "Y";
+						board[r][c] = ".";
 					} else {
 						board[r][c] = String.valueOf(obs);
 					}
@@ -312,7 +279,7 @@ public class Traversal {
 					if (curCol > 0) {
 						moveHorMovers();
 						// check what is in the char to the left
-						if (target.indexOf(origBoard[curRow][curCol - 1]) >= 0) { // target
+						if (target.indexOf(board[curRow][curCol - 1]) >= 0) { // target
 							message = "You won!";
 							gameOver = true;
 						} else if (lostChars.indexOf(board[curRow][curCol - 1]) >= 0) { // obstacles*
@@ -325,7 +292,7 @@ public class Traversal {
 				case 'l': // right move
 					if (curCol < (colCount - 1)) {
 						moveHorMovers();
-						if (target.indexOf(origBoard[curRow][curCol + 1]) >= 0) { // target
+						if (target.indexOf(board[curRow][curCol + 1]) >= 0) { // target
 							message = "You won!";
 							gameOver = true;
 						} else if (lostChars.indexOf(board[curRow][curCol + 1]) >= 0) { // wall
@@ -338,7 +305,7 @@ public class Traversal {
 				case 'j': // down move
 					moveVerMovers();
 					if ((curRow < (rowCount - 1))) {
-						if (target.indexOf(origBoard[curRow + 1][curCol]) >= 0) {
+						if (target.indexOf(board[curRow + 1][curCol]) >= 0) {
 							message = "You won!";
 							gameOver = true;
 						} else if (lostChars.indexOf(board[curRow + 1][curCol]) >= 0) { // wall
@@ -353,7 +320,7 @@ public class Traversal {
 				case 'k': // up move
 					moveVerMovers();
 					if ((curRow > 0)) {
-						if (target.indexOf(origBoard[curRow - 1][curCol]) >= 0) {
+						if (target.indexOf(board[curRow - 1][curCol]) >= 0) {
 							message = "You won!";
 							gameOver = true;
 						} else if (lostChars.indexOf(board[curRow - 1][curCol]) >= 0) { // wall
@@ -376,14 +343,12 @@ public class Traversal {
 				}
 
 				// if current string contains key,move ports
-				if (board[curRow][curCol].contains("k")
-						|| board[curRow][curCol].contains("K")) {
-					updatePorts();
-					board[curRow][curCol] = board[curRow][curCol].replace("k",
-							"").replace("K", "");
-					if (board[curRow][curCol].isEmpty()) {
-						board[curRow][curCol] = ".";
-					}
+				if (board[curRow][curCol].contains("k")|| board[curRow][curCol].contains("K")) {
+						updatePorts();
+						board[curRow][curCol] = board[curRow][curCol].replace("k", "").replace("K", "");
+						if (board[curRow][curCol].isEmpty()) {
+							board[curRow][curCol] = ".";
+						}
 				}
 
 				// System.out.println("Usage: java Keys [boardFile] [commandfile]");
@@ -395,7 +360,7 @@ public class Traversal {
 			System.out.println();
 
 			// update board
-			board[curRow][curCol] = addChar(board[curRow][curCol], 'y');
+			board[curRow][curCol] = addChar(board[curRow][curCol], 'Y');
 			if (!message.isEmpty()) {
 				System.out.println(message);
 			}
@@ -409,20 +374,21 @@ public class Traversal {
 			String key = "kK";
 			for (int r = 0; r < rowCount; r++) {
 				for (int c = 0; c < colCount; c++) {
-					if (target.indexOf(board[r][c]) >= 0) {
-						board[r][c] = "t";
-					} else if (key.indexOf(board[r][c]) >= 0) {
-						board[r][c] = "k";
-					} else if (movers.indexOf(board[r][c]) >= 0) {
-						board[r][c] = "m";
-					} else if (wall.indexOf(board[r][c]) >= 0) {
-						board[r][c] = "x";
-					} else if (closedSwitch.indexOf(board[r][c]) >= 0) {
-						board[r][c] = "s";
-					} else if (openSwitch.indexOf(board[r][c]) >= 0) {
-						board[r][c] = "S";
+					char lastChar = board[r][c].charAt(board[r][c].length()-1);
+					if (target.indexOf(lastChar) >= 0) {
+						lastChar = 't';
+					} else if (key.indexOf(lastChar) >= 0) {
+						lastChar = 'k';
+					} else if (movers.indexOf(lastChar) >= 0) {
+						lastChar = 'm';
+					} else if (wall.indexOf(lastChar) >= 0) {
+						lastChar = 'x';
+					} else if (closedSwitch.indexOf(lastChar) >= 0) {
+						lastChar = 's';
+					} else if (openSwitch.indexOf(lastChar) >= 0) {
+						lastChar = 'S';
 					}
-					System.out.print(board[r][c]);
+					System.out.print(lastChar);
 				}
 				System.out.print("\n");
 			}
