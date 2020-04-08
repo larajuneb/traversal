@@ -35,7 +35,14 @@ public class Traversal {
 	 * @param s
 	 * @return
 	 */
-	private static String removeChar(String s, int p) {
+	private static String removeChar(String s, char c) {
+		s = s.replaceFirst(String.valueOf(c), "");
+		if (s.isEmpty()) {
+			s = ".";
+		}
+		return s;
+	}
+	/*private static String removeChar(String s, int p) {
 		if (p < s.length()) {
 			s = s.substring(0, p) + s.substring(p + 1);
 			if (s.isEmpty()) {
@@ -43,7 +50,7 @@ public class Traversal {
 			}
 		}
 		return s;
-	}
+	}*/
 
 	/**
 	 * 
@@ -67,76 +74,94 @@ public class Traversal {
 		return s + String.valueOf(c);
 	}
 
+	
+	private static void moveHorChar(int r, int c, char horChar) {
+	 	//int charPos = currentString.indexOf(horChar);
+		int newR=-1, newC=-1;
+		// update board
+		switch (horChar) {
+		case 'u':
+			if (r > 0) {
+				newR = r-1; newC = c;
+			} else if (r == 0) {
+				newR = rowCount - 1; newC = c;
+			}
+			break;
+		case 'd':
+			if (r < (rowCount - 1)) {
+				newR = r + 1; newC = c;
+			} else if (r == (rowCount - 1)) {
+				newR = 0; newC = c;
+			}
+			break;
+		case 'l':
+			if (c > 0) {
+				newR = r; newC = c-1;
+			} else if (c == 0) {
+				newR = r; newC = colCount-1;
+			}
+			break;
+		case 'r':
+			if (c < (colCount - 1)) {
+				newR = r; newC = c+1;
+			} else if (c == (colCount - 1)) {
+				newR = r; newC = 0;
+			}
+			break;
+		/*case 'h':
+			board[r][c] = replaceChar(currentString, i, 'H');
+			break;
+		case 'H':
+			board[r][c] = replaceChar(currentString, i, 'h');*/
+		}
+		
+		System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
+				String.valueOf(horChar), 
+				r, c, board[r][c],
+				newR, newC, board[newR][newC]));
+		
+		board[r][c] = removeChar(board[r][c], horChar);
+		if (newR != -1 && newC != -1) {
+			board[newR][newC] = addChar(board[newR][newC], horChar);
+		}
+		
+		System.out.println(String.format("AFTER moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
+				String.valueOf(horChar), 
+				r, c, board[r][c],
+				newR, newC, board[newR][newC]));
+	}
+	
 	/**
 	 * 
 	 */
-
 	private static void moveHorMovers() {
 		String[][] copy = copyBoard();
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
 				// loop through all of the characters in the string at r,c
 				String currentString = copy[r][c];
-				for (int i = 0; i < currentString.length(); i++) {
-					char currentChar = currentString.charAt(i);
-					if ("udlrHh".indexOf(currentChar) >= 0) {
-						// update board
-						switch (currentChar) {
-						case 'u':
-							if (r > 0) {
-								board[r - 1][c] = addChar(board[r - 1][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							} else if (r == 0) {
-								board[rowCount - 1][c] = addChar(board[rowCount - 1][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							}
-							break;
-						case 'd':
-							if (r < (rowCount - 1)) {
-								board[r + 1][c] = addChar(board[r + 1][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							} else if (r == (rowCount - 1)) {
-								board[0][c] = addChar(board[0][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							}
-							break;
-						case 'l':
-							if (c > 0) {
-								board[r][c - 1] = addChar(board[r][c - 1], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							} else if (c == 0) {
-								board[r][colCount - 1] = addChar(board[r][colCount - 1], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							}
-							break;
-						case 'r':
-							if (c < (colCount - 1)) {
-								board[r][c + 1] = addChar(board[r][c + 1],  currentChar);
-								board[r][c] = removeChar(currentString, i);
-							} else if (c == (colCount - 1)) {
-								board[r][0] = addChar(board[r][0], currentChar);
-								board[r][c] = removeChar(currentString, i);
-							}
-							break;
-						case 'h':
-							board[r][c] = replaceChar(currentString, i, 'H');
-							break;
-						case 'H':
-							board[r][c] = replaceChar(currentString, i, 'h');
-						}
-
-					}
+				if (copy[r][c].indexOf('u') >= 0) {
+					moveHorChar(r, c, 'u');
+				}
+				if (copy[r][c].indexOf('d') >= 0) {
+					moveHorChar(r, c, 'd');
+				}
+				if (copy[r][c].indexOf('l') >= 0) {
+					moveHorChar(r, c, 'l');
+				}
+				if (copy[r][c].indexOf('r') >= 0) {
+					moveHorChar(r, c, 'r');
 				}
 			}
 		}
 	}
 
 	private static void moveVerMovers() {
-		String[][] copy = copyBoard();
+		//String[][] copy = copyBoard();
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
 				// loop through all the chars in the string at r,c
-				String currentString = copy[r][c];
+				String currentString = board[r][c];
 				for (int i = 0; i < currentString.length(); i++) {
 					char currentChar = currentString.charAt(i);
 					if ("UDLRVv".indexOf(currentChar) >= 0) {
@@ -145,46 +170,46 @@ public class Traversal {
 						case 'U':
 							if (r > 0) {
 								board[r - 1][c] = addChar(board[r - 1][c], currentChar); 
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							} else if (r == 0) {
 								board[rowCount - 1][c] = addChar(board[rowCount - 1][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'D':
 							if (r < (rowCount - 1)) {
 								board[r + 1][c] = addChar(board[r + 1][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							} else if (r == (rowCount - 1)) {
 								board[0][c] = addChar(board[0][c], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'L':
 							if (c > 0) {
 								board[r][c - 1] = addChar(board[r][c - 1], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							} else if (c == 0) {
 								board[r][colCount - 1] = addChar(board[r][colCount - 1], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							}
 							break;
 						case 'R':
 							if (c < (colCount - 1)) {
 								board[r][c + 1] = addChar(board[r][c + 1], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							} else if (c == (colCount - 1)) {
 								board[r][0] = addChar(board[r][0], currentChar);
-								board[r][c] = removeChar(currentString, i);
+								// TODO: board[r][c] = removeChar(currentString, i);
 							}
 							break;
-						case 'v':
+						/*case 'v':
 							board[r][c] = replaceChar(currentString, i, 'V');
 							break;
 						case 'V':
 							board[r][c] = replaceChar(currentString, i, 'v');
 							break;
-
+*/
 						}
 					}
 				}
@@ -272,7 +297,7 @@ public class Traversal {
 				// NEEDED
 				// FOR OUTPUT, JUST FOR
 				// TESTING
-
+				System.out.println(String.format("\nMOVE %d: ", (m+1)));
 				switch (moves.charAt(m)) { // key inputs and subsequent moves
 											// and actions
 				case 'h': // left move
@@ -350,7 +375,10 @@ public class Traversal {
 							board[curRow][curCol] = ".";
 						}
 				}
-
+				System.out.println("*****************************************************************************");
+				printBoard(board);
+				System.out.println("*****************************************************************************");
+				
 				// System.out.println("Usage: java Keys [boardFile] [commandfile]");
 				if (gameOver) {
 					break;
