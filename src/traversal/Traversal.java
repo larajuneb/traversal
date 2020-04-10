@@ -42,15 +42,6 @@ public class Traversal {
 		}
 		return s;
 	}
-	/*private static String removeChar(String s, int p) {
-		if (p < s.length()) {
-			s = s.substring(0, p) + s.substring(p + 1);
-			if (s.isEmpty()) {
-				s = ".";
-			}
-		}
-		return s;
-	}*/
 
 	/**
 	 * 
@@ -120,10 +111,10 @@ public class Traversal {
 			board[r][c] = replaceChar(currentString, i, 'h');*/
 		}
 		
-		System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
+		/*System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
 				String.valueOf(horChar), 
 				r, c, board[r][c],
-				newR, newC, board[newR][newC]));
+				newR, newC, board[newR][newC]));*/
 		
 		if (newR != -1 && newC != -1) {
 			// nothing must be changed
@@ -131,10 +122,10 @@ public class Traversal {
 			board[newR][newC] = addChar(board[newR][newC], horChar);
 		}
 		
-		System.out.println(String.format("AFTER moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
+		/*System.out.println(String.format("AFTER moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
 				String.valueOf(horChar), 
 				r, c, board[r][c],
-				newR, newC, board[newR][newC]));
+				newR, newC, board[newR][newC]));*/
 	}
 	
 	
@@ -179,10 +170,10 @@ public class Traversal {
 			board[r][c] = replaceChar(currentString, i, 'h');*/
 		}
 		
-		System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
+		/*System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
 				String.valueOf(verChar), 
 				r, c, board[r][c],
-				newR, newC, board[newR][newC]));
+				newR, newC, board[newR][newC]));*/
 		
 		if (newR != -1 && newC != -1) {
 			// nothing must be changed
@@ -190,10 +181,10 @@ public class Traversal {
 			board[newR][newC] = addChar(board[newR][newC], verChar);
 		}
 		
-		System.out.println(String.format("AFTER moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
+		/*System.out.println(String.format("AFTER moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
 				String.valueOf(verChar), 
 				r, c, board[r][c],
-				newR, newC, board[newR][newC]));
+				newR, newC, board[newR][newC]));*/
 	}
 	
 	/**
@@ -324,17 +315,17 @@ public class Traversal {
 				// NEEDED
 				// FOR OUTPUT, JUST FOR
 				// TESTING
-				System.out.println(String.format("\nMOVE %d: ", (m+1)));
+				//System.out.println(String.format("\nMOVE %d: ", (m+1)));
 				switch (moves.charAt(m)) { // key inputs and subsequent moves
 											// and actions
 				case 'h': // left move
 					if (curCol > 0) {
 						moveHorMovers();
 						// check what is in the char to the left
-						if (target.indexOf(board[curRow][curCol - 1]) >= 0) { // target
+						if (board[curRow][curCol - 1].matches(".*["+target+"].*")) { // target
 							message = "You won!";
 							gameOver = true;
-						} else if (lostChars.indexOf(board[curRow][curCol - 1]) >= 0) { // obstacles*
+						} else if (board[curRow][curCol - 1].matches(".*["+lostChars+"].*")) { // obstacles*
 							message = "You lost!";
 							gameOver = true;
 						}
@@ -344,10 +335,11 @@ public class Traversal {
 				case 'l': // right move
 					if (curCol < (colCount - 1)) {
 						moveHorMovers();
-						if (target.indexOf(board[curRow][curCol + 1]) >= 0) { // target
+						if (board[curRow][curCol + 1].matches(".*["+target+"].*")) { // target
 							message = "You won!";
 							gameOver = true;
-						} else if (lostChars.indexOf(board[curRow][curCol + 1]) >= 0) { // wall
+						//} else if (lostChars.indexOf(board[curRow][curCol + 1]) >= 0) { // obstacle
+						} else if (board[curRow][curCol + 1].matches(".*["+lostChars+"].*")) {
 							message = "You lost!";
 							gameOver = true;
 						}
@@ -357,10 +349,10 @@ public class Traversal {
 				case 'j': // down move
 					moveVerMovers();
 					if ((curRow < (rowCount - 1))) {
-						if (target.indexOf(board[curRow + 1][curCol]) >= 0) {
+						if (board[curRow + 1][curCol].matches(".*["+target+"].*")) {
 							message = "You won!";
 							gameOver = true;
-						} else if (lostChars.indexOf(board[curRow + 1][curCol]) >= 0) { // wall
+						} else if (board[curRow + 1][curCol].matches(".*["+lostChars+"].*")) { // wall
 							message = "You lost!";
 							gameOver = true;
 						}
@@ -372,10 +364,10 @@ public class Traversal {
 				case 'k': // up move
 					moveVerMovers();
 					if ((curRow > 0)) {
-						if (target.indexOf(board[curRow - 1][curCol]) >= 0) {
+						if (board[curRow - 1][curCol].matches(".*["+target+"].*")) {
 							message = "You won!";
 							gameOver = true;
-						} else if (lostChars.indexOf(board[curRow - 1][curCol]) >= 0) { // wall
+						} else if (board[curRow - 1][curCol].matches(".*["+lostChars+"].*")) { // wall
 							message = "You lost!";
 							gameOver = true;
 						}
@@ -402,10 +394,10 @@ public class Traversal {
 							board[curRow][curCol] = ".";
 						}
 				}
-				System.out.println("*****************************************************************************");
+				/*System.out.println("*****************************************************************************");
 				printBoard(board);
 				System.out.println("*****************************************************************************");
-				
+				*/
 				// System.out.println("Usage: java Keys [boardFile] [commandfile]");
 				if (gameOver) {
 					break;
