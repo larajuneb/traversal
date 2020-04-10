@@ -6,7 +6,7 @@ import princeton.In;
 public class Traversal {
 
 	private static String[][] board;
-	private static int startRow, startCol, curRow, curCol;
+	private static int curRow, curCol;
 	private static int rowCount;
 	private static int colCount;
 
@@ -14,9 +14,8 @@ public class Traversal {
 	 * 
 	 * @return
 	 */
-	private static String[][] copyBoard() {
+	private static String[][] copyBoard() {				// create copy board
 		String[][] copy = new String[rowCount][colCount];
-		// TODO: copy
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
 				copy[r][c] = board[r][c];
@@ -35,7 +34,7 @@ public class Traversal {
 	 * @param s
 	 * @return
 	 */
-	private static String removeChar(String s, char c) {
+	private static String removeChar(String s, char c) {				// remove a character from a string
 		s = s.replaceFirst(String.valueOf(c), "");
 		if (s.isEmpty()) {
 			s = ".";
@@ -50,7 +49,7 @@ public class Traversal {
 	 * @param newChar
 	 * @return
 	 */
-	private static String replaceChar(String s, int p, char newChar) {
+	private static String replaceChar(String s, int p, char newChar) {  // replace a character in a string  
 		return s.substring(0, p) + String.valueOf(newChar) + s.substring(p + 1);
 	}
 
@@ -60,7 +59,7 @@ public class Traversal {
 	 * @param s
 	 * @return
 	 */
-	private static String addChar(String s, char c) {
+	private static String addChar(String s, char c) {				// add a character to a string
 
 		return s + String.valueOf(c);
 	}
@@ -71,10 +70,8 @@ public class Traversal {
 	 * @param c
 	 * @param horChar
 	 */
-	private static void moveHorChar(int r, int c, char horChar) {
-	 	//int charPos = currentString.indexOf(horChar);
-		int newR=-1, newC=-1;
-		// update board
+	private static void moveHorChar(int r, int c, char horChar) {				// move horizontal movers
+		int newR=-1, newC=-1; // update board
 		switch (horChar) {
 		case 'u':
 			if (r > 0) {
@@ -104,11 +101,6 @@ public class Traversal {
 				newR = r; newC = 0;
 			}
 			break;
-		/*case 'h':
-			board[r][c] = replaceChar(currentString, i, 'H');
-			break;
-		case 'H':
-			board[r][c] = replaceChar(currentString, i, 'h');*/
 		}
 		
 		/*System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
@@ -116,8 +108,7 @@ public class Traversal {
 				r, c, board[r][c],
 				newR, newC, board[newR][newC]));*/
 		
-		if (newR != -1 && newC != -1) {
-			// nothing must be changed
+		if (newR != -1 && newC != -1) {			// nothing must be changed
 			board[r][c] = removeChar(board[r][c], horChar);
 			board[newR][newC] = addChar(board[newR][newC], horChar);
 		}
@@ -129,11 +120,9 @@ public class Traversal {
 	}
 	
 	
-	// TO DO: change to vertical
-	private static void moveVerChar(int r, int c, char verChar) {
-	 	//int charPos = currentString.indexOf(horChar);
-		int newR=-1, newC=-1;
-		// update board
+
+	private static void moveVerChar(int r, int c, char verChar) {				// move vertical movers
+		int newR=-1, newC=-1; // update board
 		switch (verChar) {
 		case 'U':
 			if (r > 0) {
@@ -163,11 +152,6 @@ public class Traversal {
 				newR = r; newC = 0;
 			}
 			break;
-		/*case 'h':
-			board[r][c] = replaceChar(currentString, i, 'H');
-			break;
-		case 'H':
-			board[r][c] = replaceChar(currentString, i, 'h');*/
 		}
 		
 		/*System.out.println(String.format("BEFORE moveHorMovers %s, prevPos[%d,%d]:%s, newPos[%d,%d]:%s ", 
@@ -175,8 +159,7 @@ public class Traversal {
 				r, c, board[r][c],
 				newR, newC, board[newR][newC]));*/
 		
-		if (newR != -1 && newC != -1) {
-			// nothing must be changed
+		if (newR != -1 && newC != -1) { 			// nothing must be changed
 			board[r][c] = removeChar(board[r][c], verChar);
 			board[newR][newC] = addChar(board[newR][newC], verChar);
 		}
@@ -190,12 +173,10 @@ public class Traversal {
 	/**
 	 * 
 	 */
-	private static void moveHorMovers() {
+	private static void moveHorMovers() {				// update all horizontal obstacles
 		String[][] copy = copyBoard();
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
-				// loop through all of the characters in the string at r,c
-				String currentString = copy[r][c];
 				if (copy[r][c].indexOf('u') >= 0) {
 					moveHorChar(r, c, 'u');
 				}
@@ -208,16 +189,21 @@ public class Traversal {
 				if (copy[r][c].indexOf('r') >= 0) {
 					moveHorChar(r, c, 'r');
 				}
+				if (copy[r][c].contains("h")) {
+					board[r][c] = board[r][c].replaceAll("h", "H"); // switch closed switch to open
+				}
+				if (copy[r][c].contains("H")) {
+					board[r][c] = board[r][c].replaceAll("H", "h"); // switch open switch to closed
+				}
 			}
 		}
 	}
+	
 
-	private static void moveVerMovers() {
+	private static void moveVerMovers() {				// update all vertical obstacles
 		String[][] copy = copyBoard();
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
-				// loop through all of the characters in the string at r,c
-				String currentString = copy[r][c];
 				if (copy[r][c].indexOf('U') >= 0) {
 					moveVerChar(r, c, 'U');
 				}
@@ -230,6 +216,12 @@ public class Traversal {
 				if (copy[r][c].indexOf('R') >= 0) {
 					moveVerChar(r, c, 'R');
 				}
+				if (copy[r][c].contains("v")) {
+					board[r][c] = board[r][c].replaceAll("v", "V"); // change closed switch to open
+				}
+				if (copy[r][c].contains("V")) {
+					board[r][c] = board[r][c].replaceAll("V", "v"); // change open switch to closed
+				}
 			}
 		}
 	}
@@ -238,25 +230,16 @@ public class Traversal {
 	/**
 	 * 
 	 */
-	private static void updatePorts() {
+	private static void updatePorts() { 				// update all ports
+		String[][] copy = copyBoard();
 		for (int r = 0; r < rowCount; r++) {
 			for (int c = 0; c < colCount; c++) {
-				String currentString = board[r][c];
-				for (int t = 0; t < currentString.length(); t++) {
-					char currentChar = currentString.charAt(t);
-					switch (currentChar) {
-					case 'p':
-						board[r][c] = replaceChar(currentString, t, 'P');
-						break;
-					case 'P':
-						board[r][c] = replaceChar(currentString, t, 'p');
-						break;
-					default:
-						break;
-					}
-
+				if (copy[r][c].contains("p")) {
+					board[r][c] = board[r][c].replaceAll("p", "P"); // change closed port to open
 				}
-
+				if (copy[r][c].contains("P")) {
+					board[r][c] = board[r][c].replaceAll("P", "p"); // change open port to closed
+				}
 			}
 		}
 	}
@@ -265,14 +248,7 @@ public class Traversal {
 	 * 
 	 * @param b
 	 */
-	private static void printBoard(String[][] b) {
-		for (int r = 0; r < rowCount; r++) {
-			for (int c = 0; c < colCount; c++) {
-				System.out.print(b[r][c]);
-			}
-			System.out.print("\n");
-		}
-	}
+
 
 	/**
 	 * 
@@ -283,7 +259,7 @@ public class Traversal {
 			// Text mode
 			// System.out.println(args[0]);
 			In boardFile = new In(args[0]);
-			String boardName = boardFile.readLine();
+			/*String boardName =*/ boardFile.readLine(); // read name of board
 			rowCount = boardFile.readInt();
 			colCount = boardFile.readInt();
 			board = new String[rowCount][colCount];
