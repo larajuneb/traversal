@@ -256,10 +256,8 @@ public class Traversal {
 	 */
 	public static void main(String[] args) {
 		if (args.length == 2) {
-			// Text mode
-			// System.out.println(args[0]);
 			In boardFile = new In(args[0]);
-			/*String boardName =*/ boardFile.readLine(); // read name of board
+			boardFile.readLine();				// read name of board
 			rowCount = boardFile.readInt();
 			colCount = boardFile.readInt();
 			board = new String[rowCount][colCount];
@@ -277,95 +275,92 @@ public class Traversal {
 				}
 			}
 
-			// TODO: now read the moves file into a string
-			// System.out.println(args[1]);
+			  									// read the moves file into a string:
 			In movesFile = new In(args[1]);
 			String moves = movesFile.readString();
 			boolean gameOver = false;
 			String message = "";
-			String lostChars = "xXpHVudlrUDLR";
-			String target = "tT";
+			String lostChars = "xXpHVudlrUDLR"; // any obstacle that will cause you to lose
+			String target = "tT";               // the target
 
 			for (int m = 0; m < moves.length(); m++) {
-				// System.out.print(moves.charAt(m)); // REMOVE AT END, NOT
-				// NEEDED
-				// FOR OUTPUT, JUST FOR
-				// TESTING
 				//System.out.println(String.format("\nMOVE %d: ", (m+1)));
-				switch (moves.charAt(m)) { // key inputs and subsequent moves
-											// and actions
-				case 'h': // left move
-					if (curCol > 0) {
+				switch (moves.charAt(m)) {   	  // key inputs and subsequent moves and actions
+
+				case 'h':   // left move
+					if (curCol > 0) { // check that the player is not on the left side of the board
 						moveHorMovers();
-						// check what is in the char to the left
-						if (board[curRow][curCol - 1].matches(".*["+target+"].*")) { // target
+						// check what is in the string to the left
+						if (board[curRow][curCol - 1].matches(".*["+target+"].*")) { // reached target
 							message = "You won!";
 							gameOver = true;
-						} else if (board[curRow][curCol - 1].matches(".*["+lostChars+"].*")) { // obstacles*
+						} else if (board[curRow][curCol - 1].matches(".*["+lostChars+"].*")) { // hit an obstacle
 							message = "You lost!";
 							gameOver = true;
 						}
-						curCol = curCol - 1;
+						curCol = curCol - 1;  // update position
 					}
 					break;
 				case 'l': // right move
-					if (curCol < (colCount - 1)) {
+					if (curCol < (colCount - 1)) { // check that the player is not on the right side of the board
 						moveHorMovers();
-						if (board[curRow][curCol + 1].matches(".*["+target+"].*")) { // target
+						// check what is in the string to the right
+						if (board[curRow][curCol + 1].matches(".*["+target+"].*")) { // reached target
 							message = "You won!";
 							gameOver = true;
-						//} else if (lostChars.indexOf(board[curRow][curCol + 1]) >= 0) { // obstacle
-						} else if (board[curRow][curCol + 1].matches(".*["+lostChars+"].*")) {
+						} else if (board[curRow][curCol + 1].matches(".*["+lostChars+"].*")) { // hit an obstacle
 							message = "You lost!";
 							gameOver = true;
 						}
-						curCol = curCol + 1;
+						curCol = curCol + 1;  // update position
 					}
 					break;
 				case 'j': // down move
 					moveVerMovers();
-					if ((curRow < (rowCount - 1))) {
-						if (board[curRow + 1][curCol].matches(".*["+target+"].*")) {
+					// check what is in the string below
+					if ((curRow < (rowCount - 1))) { // check that the player is not at the bottom of the board
+						if (board[curRow + 1][curCol].matches(".*["+target+"].*")) { // reached target
 							message = "You won!";
 							gameOver = true;
-						} else if (board[curRow + 1][curCol].matches(".*["+lostChars+"].*")) { // wall
+						} else if (board[curRow + 1][curCol].matches(".*["+lostChars+"].*")) { // hit an obstacle
 							message = "You lost!";
 							gameOver = true;
 						}
-						curRow = curRow + 1;
-					} else { // at bottom of board
-						curRow = 0;
+						curRow = curRow + 1;  // update position
+					} else { // the player is at bottom of the board, now wrap to the top
+						curRow = 0;  // update position
 					}
 					break;
 				case 'k': // up move
 					moveVerMovers();
-					if ((curRow > 0)) {
-						if (board[curRow - 1][curCol].matches(".*["+target+"].*")) {
+					// check what is in the string above
+					if ((curRow > 0)) { // check that the player is not at the top of the board
+						if (board[curRow - 1][curCol].matches(".*["+target+"].*")) { // reached target
 							message = "You won!";
 							gameOver = true;
-						} else if (board[curRow - 1][curCol].matches(".*["+lostChars+"].*")) { // wall
+						} else if (board[curRow - 1][curCol].matches(".*["+lostChars+"].*")) { // hit an obstacle
 							message = "You lost!";
 							gameOver = true;
 						}
-						curRow = curRow - 1;
-					} else { // at top of board
-						curRow = (rowCount - 1);
+						curRow = curRow - 1;  // update position
+					} else { // the player is at the top of board, now wrap to the bottom
+						curRow = (rowCount - 1);  // update position
 					}
 					break;
-				case 'x':
+				case 'x': // player quits game
 					gameOver = true;
 					break;
-				default:
+				default: // player presses invalid key
 					System.out.println("Incorrect move");
 					gameOver = true;
 					break;
 
 				}
 
-				// if current string contains key,move ports
+				// if current string contains a key, move ports
 				if (board[curRow][curCol].contains("k")|| board[curRow][curCol].contains("K")) {
 						updatePorts();
-						board[curRow][curCol] = board[curRow][curCol].replace("k", "").replace("K", "");
+						board[curRow][curCol] = board[curRow][curCol].replace("k", "").replace("K", ""); // once the player has touched a key, the key becomes unavailable
 						if (board[curRow][curCol].isEmpty()) {
 							board[curRow][curCol] = ".";
 						}
@@ -388,9 +383,8 @@ public class Traversal {
 				System.out.println(message);
 			}
 
-			// TODO: print out board, changing characters to correct output
-			// characters
-			String movers = "UDLRudlr";
+			// print out board, changing characters to correct output characters
+			String movers = "UDLRudlr"; 
 			String wall = "xX";
 			String closedSwitch = "hv";
 			String openSwitch = "HV";
