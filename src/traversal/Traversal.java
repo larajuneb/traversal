@@ -42,16 +42,6 @@ public class Traversal {
 		return s;
 	}
 
-	/**
-	 * 
-	 * @param s
-	 * @param p
-	 * @param newChar
-	 * @return
-	 */
-	private static String replaceChar(String s, int p, char newChar) {  // replace a character in a string  
-		return s.substring(0, p) + String.valueOf(newChar) + s.substring(p + 1);
-	}
 
 	/**
 	 * adds char to he end of a string
@@ -71,34 +61,34 @@ public class Traversal {
 	 * @param horChar
 	 */
 	private static void moveHorChar(int r, int c, char horChar) {				// move horizontal movers
-		int newR=-1, newC=-1; // update board
+		int newR=-1, newC=-1;
 		switch (horChar) {
 		case 'u':
 			if (r > 0) {
-				newR = r-1; newC = c;
+				newR = r-1; newC = c;  					//update character's new position
 			} else if (r == 0) {
-				newR = rowCount - 1; newC = c;
+				newR = rowCount - 1; newC = c;  		//update character's new position
 			}
 			break;
 		case 'd':
 			if (r < (rowCount - 1)) {
-				newR = r + 1; newC = c;
+				newR = r + 1; newC = c;  				//update character's new position
 			} else if (r == (rowCount - 1)) {
-				newR = 0; newC = c;
+				newR = 0; newC = c;  					//update character's new position
 			}
 			break;
 		case 'l':
 			if (c > 0) {
-				newR = r; newC = c-1;
+				newR = r; newC = c-1;  					//update character's new position
 			} else if (c == 0) {
-				newR = r; newC = colCount-1;
+				newR = r; newC = colCount-1;  			//update character's new position
 			}
 			break;
 		case 'r':
 			if (c < (colCount - 1)) {
-				newR = r; newC = c+1;
+				newR = r; newC = c+1;  					//update character's new position
 			} else if (c == (colCount - 1)) {
-				newR = r; newC = 0;
+				newR = r; newC = 0;  					//update character's new position
 			}
 			break;
 		}
