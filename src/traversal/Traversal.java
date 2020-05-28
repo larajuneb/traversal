@@ -245,7 +245,7 @@ public class Traversal {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if (args.length == 2) {
+		if (args.length == 2) {                 // TEXT MODE
 			In boardFile = new In(args[0]);
 			boardFile.readLine();				// read name of board
 			rowCount = boardFile.readInt();
